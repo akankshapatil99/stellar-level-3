@@ -192,8 +192,8 @@ export default function App() {
         .build();
 
       const simulation = await server.simulateTransaction(tx);
-      if (simulation.results && simulation.results.length > 0) {
-        const resultVal = scValToNative(simulation.results[0].retval);
+      if (simulation.result && simulation.result.retval) {
+        const resultVal = scValToNative(simulation.result.retval);
         setTotal(Number(resultVal) || 0);
       }
     } catch (e) {
