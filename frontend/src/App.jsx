@@ -31,6 +31,7 @@ export default function App() {
   const [status, setStatus] = useState("");
   const [txHash, setTxHash] = useState("");
   const [amounts, setAmounts] = useState({ 1: "", 2: "", 3: "" });
+  const [walletType, setWalletType] = useState(null);
 
   const GOAL = 5000; // Platform-wide goal
 
@@ -46,26 +47,43 @@ export default function App() {
     }
   }, [status]);
 
-  const connectWallet = async () => {
+  // Real-time event polling
+  useEffect(() => {
+    fetchTotal();
+    const interval = setInterval(fetchTotal, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const connectWallet = async (type) => {
     try {
-      const { isConnected: connected } = await isConnected();
-      if (!connected) {
-        return alert("Freighter extension is not installed or locked.");
-      }
+      if (type === "freighter") {
+        const { isConnected: connected } = await isConnected();
+        if (!connected) {
+          return alert("Freighter extension is not installed or locked.");
+        }
 
-      const { address, error } = await requestAccess();
+        const { address, error } = await requestAccess();
 
-      if (error) {
-        console.error("Access error:", error);
-        return alert(`Freighter error: ${error}`);
-      }
+        if (error) {
+          console.error("Access error:", error);
+          return alert(`Freighter error: ${error}`);
+        }
 
-      if (address) {
-        setAddress(address);
+        if (address) {
+          setAddress(address);
+          setWalletType("freighter");
+        }
+      } else if (type === "rabet") {
+        if (!window.rabet) return alert("Rabet extension is not installed.");
+        const result = await window.rabet.connect();
+        if (result.publicKey) {
+          setAddress(result.publicKey);
+          setWalletType("rabet");
+        }
       }
     } catch (error) {
       console.error("Wallet connection error:", error);
-      alert(`Freighter error: ${error.message || "Unknown error"}`);
+      alert(`Wallet error: ${error.message || "Unknown error"}`);
     }
   };
 
@@ -165,75 +183,87 @@ export default function App() {
     }
   };
 
-  useEffect(() => {
-    fetchTotal();
-  }, []);
+};
 
-  return (
-    <div className="app-container">
-      <header className="header">
-        <div className="title">Nexus</div>
-        <div>
-          {!address ? (
-            <div style={{ display: 'flex', gap: '10px' }}>
-              <button className="wallet-btn" onClick={() => connectWallet("freighter")}>
-                Connect Freighter
-              </button>
-              <button className="wallet-btn" onClick={() => connectWallet("rabet")}>
-                Connect Rabet
-              </button>
-            </div>
-          ) : (
-            <div className="wallet-connected">
-              {walletType === "freighter" ? "Freighter: " : "Rabet: "}
-              {address.substring(0, 5)}...{address.substring(address.length - 4)}
-            </div>
-          )}
-        </div>
-      </header>
-
-      <section className="global-stats">
-        <h2>Total Impact Raised <span>{total} XLM</span></h2>
-        <div className="progress-bar-container">
-          <div
-            className="progress-bar-fill"
-            style={{ width: `${Math.min((total / GOAL) * 100, 100)}%` }}
-          />
-        </div>
-      </section>
-
-      <main className="campaigns-grid">
-        {CAMPAIGNS.map((camp) => (
-          <div key={camp.id} className="campaign-card">
-            <img src={camp.img} alt={camp.title} className="campaign-image" />
-            <h3 className="campaign-title">{camp.title}</h3>
-            <p className="campaign-desc">{camp.desc}</p>
-
-            <div className="donate-section">
-              <input
-                type="number"
-                placeholder="XLM Amount"
-                className="amount-input"
-                value={amounts[camp.id]}
-                onChange={(e) => handleAmountChange(camp.id, e.target.value)}
-              />
-              <button
-                className="donate-btn"
-                onClick={() => donateToCampaign(camp.id)}
-                disabled={status.startsWith("Pending")}
-              >
-                Fund It
-              </button>
-            </div>
+return (
+  <div className="app-container">
+    <header className="header">
+      <div className="title">Nexus</div>
+      <div>
+        {!address ? (
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <button className="wallet-btn" onClick={() => connectWallet("freighter")}>
+              Connect Freighter
+            </button>
+            <button className="wallet-btn" onClick={() => connectWallet("rabet")}>
+              Connect Rabet
+            </button>
           </div>
-        ))}
-      </main>
+        ) : (
+          <div className="wallet-connected">
+            {walletType === "freighter" ? "Freighter: " : "Rabet: "}
+            {address.substring(0, 5)}...{address.substring(address.length - 4)}
+          </div>
+        )}
+      </div>
+    </header>
 
-      <div className={`status-toast ${status ? 'visible' : ''} ${status.split(':')[0]}`}>
-        <div>{status}</div>
-        {txHash && (
-          <a
-            href={`https://stellar.expert/explorer/testnet/tx/${txHash}`}
-            target="_blank"
-            rel="noopener noreferrer"
-       
+    <section className="global-stats">
+      <h2>Total Impact Raised <span>{total} XLM</span></h2>
+      <div className="progress-bar-container">
+        <div
+          className="progress-bar-fill"
+          style={{ width: `${Math.min((total / GOAL) * 100, 100)}%` }}
+        />
+      </div>
+    </section>
+
+    <main className="campaigns-grid">
+      {CAMPAIGNS.map((camp) => (
+        <div key={camp.id} className="campaign-card">
+          <img src={camp.img} alt={camp.title} className="campaign-image" />
+          <h3 className="campaign-title">{camp.title}</h3>
+          <p className="campaign-desc">{camp.desc}</p>
+
+          <div className="donate-section">
+            <input
+              type="number"
+              placeholder="XLM Amount"
+              className="amount-input"
+              value={amounts[camp.id]}
+              onChange={(e) => handleAmountChange(camp.id, e.target.value)}
+            />
+            <button
+              className="donate-btn"
+              onClick={() => donateToCampaign(camp.id)}
+              disabled={status.startsWith("Pending")}
+            >
+              Fund It
+            </button>
+          </div>
+        </div>
+      ))}
+    </main>
+
+    <div className={`status-toast ${status ? 'visible' : ''} ${status.split(':')[0]}`}>
+      <div>{status}</div>
+      {txHash && (
+        <a
+          href={`https://stellar.expert/explorer/testnet/tx/${txHash}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: 'inline-block',
+            marginTop: '8px',
+            color: '#66fcf1',
+            textDecoration: 'underline',
+            fontSize: '0.85rem'
+          }}
+        >
+          View on Stellar Expert
+        </a>
+      )}
+    </div>
+  </div>
+);
+}
