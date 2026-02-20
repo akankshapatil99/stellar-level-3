@@ -1,0 +1,239 @@
+import { useState, useEffect } from "react";
+import { isConnected, requestAccess, signTransaction } from "@stellar/freighter-api";
+import { contract, server, Networks, TransactionBuilder } from "./contract";
+import { xdr, Address, nativeToScVal } from "@stellar/stellar-sdk";
+import "./App.css";
+
+const CAMPAIGNS = [
+  {
+    id: 1,
+    title: "Project Ocean Cleanup",
+    desc: "Deploying autonomous systems to remove plastics from our oceans globally.",
+    img: "https://images.unsplash.com/photo-1483683804023-6ccdb62f86ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    id: 2,
+    title: "Global Reforestation",
+    desc: "Planting native trees to restore critical ecosystems and offset carbon footprint.",
+    img: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    id: 3,
+    title: "Rural Education Tech",
+    desc: "Supplying solar-powered laptops and internet access to remote schools.",
+    img: "https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+  }
+];
+
+export default function App() {
+  const [address, setAddress] = useState(null);
+  const [total, setTotal] = useState(0);
+  const [status, setStatus] = useState("");
+  const [txHash, setTxHash] = useState("");
+  const [amounts, setAmounts] = useState({ 1: "", 2: "", 3: "" });
+
+  const GOAL = 5000; // Platform-wide goal
+
+  useEffect(() => {
+    if (status) {
+      // Keep success messages visible longer so users can click the link
+      const duration = status.startsWith("Success") ? 10000 : 5000;
+      const timer = setTimeout(() => {
+        setStatus("");
+        setTxHash("");
+      }, duration);
+      return () => clearTimeout(timer);
+    }
+  }, [status]);
+
+  const connectWallet = async () => {
+    try {
+      const { isConnected: connected } = await isConnected();
+      if (!connected) {
+        return alert("Freighter extension is not installed or locked.");
+      }
+
+      const { address, error } = await requestAccess();
+
+      if (error) {
+        console.error("Access error:", error);
+        return alert(`Freighter error: ${error}`);
+      }
+
+      if (address) {
+        setAddress(address);
+      }
+    } catch (error) {
+      console.error("Wallet connection error:", error);
+      alert(`Freighter error: ${error.message || "Unknown error"}`);
+    }
+  };
+
+  const handleAmountChange = (id, val) => {
+    setAmounts(prev => ({ ...prev, [id]: val }));
+  };
+
+  const donateToCampaign = async (id) => {
+    if (!address) return alert("Please connect your wallet first.");
+    const amt = amounts[id];
+    if (Number(amt) <= 0) return alert("Enter a valid amount.");
+
+    try {
+      setStatus(`Pending: Prompting Freighter for ${amt} XLM`);
+      setTxHash("");
+
+      // 1. Fetch account
+      const source = await server.getAccount(address);
+
+      // 2. Build transaction operation
+      const operation = contract.call(
+        "donate",
+        new Address(address).toScVal(),
+        nativeToScVal(Number(amt), { type: "u32" })
+      );
+
+      // 3. Build transaction
+      const tx = new TransactionBuilder(source, {
+        fee: "1000",
+        networkPassphrase: Networks.TESTNET,
+      })
+        .addOperation(operation)
+        .setTimeout(30)
+        .build();
+
+      // 4. Prepare transaction for Soroban
+      const preparedTransaction = await server.prepareTransaction(tx);
+
+      // 5. Sign with Freighter
+      setStatus(`Pending: Please sign the transaction in Freighter`);
+      const { signedTxXdr, error } = await signTransaction(preparedTransaction.toXDR(), {
+        networkPassphrase: Networks.TESTNET
+      });
+
+      if (error) throw new Error(error);
+
+      setStatus(`Pending: Submitting transaction to network...`);
+
+      // 6. Submit to Soroban testnet
+      const signedPreparedTx = typeof signedTxXdr === 'string'
+        ? TransactionBuilder.fromXDR(signedTxXdr, Networks.TESTNET)
+        : signedTxXdr;
+
+      const response = await server.sendTransaction(signedPreparedTx);
+
+      if (response.status === "ERROR") {
+        throw new Error("Transaction submission failed.");
+      }
+
+      // 7. Wait for transaction to complete
+      let getTxResponse = await server.getTransaction(response.hash);
+      while (getTxResponse.status === "NOT_FOUND") {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        getTxResponse = await server.getTransaction(response.hash);
+      }
+
+      if (getTxResponse.status === "SUCCESS") {
+        setStatus("Success: Donation completed!");
+        setTxHash(response.hash);
+        fetchTotal();
+        setAmounts(prev => ({ ...prev, [id]: "" }));
+      } else {
+        throw new Error(`Transaction failed: ${getTxResponse.resultMetaXdr}`);
+      }
+
+    } catch (e) {
+      console.error(e);
+      setStatus(`Failed: ${e.message}`);
+    }
+  };
+
+  const fetchTotal = async () => {
+    try {
+      // Create a simulated simulateTransaction for getter
+      const tx = new TransactionBuilder(await server.getAccount("GAIY5MO4B37626BZZKUVCH5HYLOKU4ZDRM4EAZAUMX5N54YY3XOPOS53"), { fee: "100", networkPassphrase: Networks.TESTNET })
+        .addOperation(contract.call("get_total"))
+        .setTimeout(30)
+        .build();
+
+      const simulation = await server.simulateTransaction(tx);
+      if (simulation.results && simulation.results.length > 0) {
+        const resultVal = xdr.scVal.fromXDR(simulation.results[0].retval.toXDR());
+        setTotal(Number(resultVal.u32() || 0));
+      }
+    } catch (e) {
+      console.error("fetchTotal error:", e);
+    }
+  };
+
+  useEffect(() => {
+    fetchTotal();
+  }, []);
+
+  return (
+    <div className="app-container">
+      <header className="header">
+        <div className="title">Nexus</div>
+        <div>
+          {!address ? (
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button className="wallet-btn" onClick={() => connectWallet("freighter")}>
+                Connect Freighter
+              </button>
+              <button className="wallet-btn" onClick={() => connectWallet("rabet")}>
+                Connect Rabet
+              </button>
+            </div>
+          ) : (
+            <div className="wallet-connected">
+              {walletType === "freighter" ? "Freighter: " : "Rabet: "}
+              {address.substring(0, 5)}...{address.substring(address.length - 4)}
+            </div>
+          )}
+        </div>
+      </header>
+
+      <section className="global-stats">
+        <h2>Total Impact Raised <span>{total} XLM</span></h2>
+        <div className="progress-bar-container">
+          <div
+            className="progress-bar-fill"
+            style={{ width: `${Math.min((total / GOAL) * 100, 100)}%` }}
+          />
+        </div>
+      </section>
+
+      <main className="campaigns-grid">
+        {CAMPAIGNS.map((camp) => (
+          <div key={camp.id} className="campaign-card">
+            <img src={camp.img} alt={camp.title} className="campaign-image" />
+            <h3 className="campaign-title">{camp.title}</h3>
+            <p className="campaign-desc">{camp.desc}</p>
+
+            <div className="donate-section">
+              <input
+                type="number"
+                placeholder="XLM Amount"
+                className="amount-input"
+                value={amounts[camp.id]}
+                onChange={(e) => handleAmountChange(camp.id, e.target.value)}
+              />
+              <button
+                className="donate-btn"
+                onClick={() => donateToCampaign(camp.id)}
+                disabled={status.startsWith("Pending")}
+              >
+                Fund It
+              </button>
+            </div>
+          </div>
+        ))}
+      </main>
+
+      <div className={`status-toast ${status ? 'visible' : ''} ${status.split(':')[0]}`}>
+        <div>{status}</div>
+        {txHash && (
+          <a
+            href={`https://stellar.expert/explorer/testnet/tx/${txHash}`}
+            target="_blank"
+            rel="noopener noreferrer"
+       
