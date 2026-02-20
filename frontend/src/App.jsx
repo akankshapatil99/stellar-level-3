@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { isConnected, requestAccess, signTransaction } from "@stellar/freighter-api";
 import { contract, server, Networks, TransactionBuilder } from "./contract";
-import { xdr, Address, nativeToScVal } from "@stellar/stellar-sdk";
+import { xdr, Address, nativeToScVal, scValToNative } from "@stellar/stellar-sdk";
 import "./App.css";
 
 const CAMPAIGNS = [
@@ -107,7 +107,7 @@ export default function App() {
       const operation = contract.call(
         "donate",
         new Address(address).toScVal(),
-        nativeToScVal(Number(amt), { type: "u32" })
+        nativeToScVal(Number(amt), { type: "i128" })
       );
 
       // 3. Build transaction
@@ -122,20 +122,30 @@ export default function App() {
       // 4. Prepare transaction for Soroban
       const preparedTransaction = await server.prepareTransaction(tx);
 
-      // 5. Sign with Freighter
-      setStatus(`Pending: Please sign the transaction in Freighter`);
-      const { signedTxXdr, error } = await signTransaction(preparedTransaction.toXDR(), {
-        networkPassphrase: Networks.TESTNET
-      });
-
-      if (error) throw new Error(error);
+      // 5. Sign with the correct wallet
+      let signedTxXdrStr;
+      if (walletType === "freighter") {
+        setStatus(`Pending: Please sign the transaction in Freighter...`);
+        const { signedTxXdr, error } = await signTransaction(preparedTransaction.toXDR(), {
+          networkPassphrase: Networks.TESTNET
+        });
+        if (error) throw new Error(error);
+        signedTxXdrStr = signedTxXdr;
+      } else if (walletType === "rabet") {
+        setStatus(`Pending: Please sign the transaction in Rabet...`);
+        const result = await window.rabet.sign(preparedTransaction.toXDR(), "testnet");
+        if (result.error) throw new Error(result.error);
+        signedTxXdrStr = result.xdr;
+      } else {
+        throw new Error("No wallet connected");
+      }
 
       setStatus(`Pending: Submitting transaction to network...`);
 
       // 6. Submit to Soroban testnet
-      const signedPreparedTx = typeof signedTxXdr === 'string'
-        ? TransactionBuilder.fromXDR(signedTxXdr, Networks.TESTNET)
-        : signedTxXdr;
+      const signedPreparedTx = typeof signedTxXdrStr === 'string'
+        ? TransactionBuilder.fromXDR(signedTxXdrStr, Networks.TESTNET)
+        : signedTxXdrStr;
 
       const response = await server.sendTransaction(signedPreparedTx);
 
@@ -175,8 +185,8 @@ export default function App() {
 
       const simulation = await server.simulateTransaction(tx);
       if (simulation.results && simulation.results.length > 0) {
-        const resultVal = xdr.scVal.fromXDR(simulation.results[0].retval.toXDR());
-        setTotal(Number(resultVal.u32() || 0));
+        const resultVal = scValToNative(simulation.results[0].retval);
+        setTotal(Number(resultVal) || 0);
       }
     } catch (e) {
       console.error("fetchTotal error:", e);
@@ -205,6 +215,31 @@ export default function App() {
           )}
         </div>
       </header>
+
+      <div className="hero-section">
+        <h1 className="hero-title">Empower Global Change with Stellar Smart Contracts.</h1>
+        <p className="hero-subtitle">
+          Nexus is a fully decentralized crowdfunding platform built on the Soroban Testnet.
+          When you donate to any of the campaigns below, your funds are secured immutably on the Stellar blockchain, offering 100% transparency and near-instant transaction finality.
+          Choose your favorite cause and see the collective impact update in real-time.
+        </p>
+
+        {!address && (
+          <div className="hero-wallets">
+            <h3 style={{ color: '#66fcf1', marginBottom: '15px' }}>Connect a wallet to start contributing:</h3>
+            <div style={{ display: 'flex', gap: '20px', justifyContent: 'center' }}>
+              <button className="wallet-btn-large" onClick={() => connectWallet("freighter")}>
+                <span style={{ fontSize: '1.2rem', fontWeight: '800' }}>Connect Freighter</span>
+                <span style={{ fontSize: '0.8rem', opacity: 0.8, display: 'block', marginTop: '5px' }}>Stellar's Official Wallet</span>
+              </button>
+              <button className="wallet-btn-large" onClick={() => connectWallet("rabet")}>
+                <span style={{ fontSize: '1.2rem', fontWeight: '800' }}>Connect Rabet</span>
+                <span style={{ fontSize: '0.8rem', opacity: 0.8, display: 'block', marginTop: '5px' }}>Open-source Multi-Chain Option</span>
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
 
       <section className="global-stats">
         <h2>Total Impact Raised <span>{total} XLM</span></h2>
