@@ -28,14 +28,28 @@ const CAMPAIGNS = [
 export default function App() {
   const [address, setAddress] = useState(null);
   const [total, setTotal] = useState(0);
+  const [displayTotal, setDisplayTotal] = useState(0);
   const [status, setStatus] = useState("");
   const [txHash, setTxHash] = useState("");
   const [amounts, setAmounts] = useState({ 1: "", 2: "", 3: "" });
   const [walletType, setWalletType] = useState(null);
   const [showCert, setShowCert] = useState(false);
   const [lastDonation, setLastDonation] = useState({ amount: 0, campaign: "" });
+  const [balance, setBalance] = useState(null);
+  const [recentTxs, setRecentTxs] = useState([]);
 
   const GOAL = 5000; // Platform-wide goal
+
+  useEffect(() => {
+    if (displayTotal < total) {
+      const timer = setTimeout(() => {
+        setDisplayTotal(prev => Math.min(prev + Math.ceil((total - prev) / 10), total));
+      }, 50);
+      return () => clearTimeout(timer);
+    } else if (displayTotal > total) {
+      setDisplayTotal(total);
+    }
+  }, [total, displayTotal]);
 
   useEffect(() => {
     if (status) {
@@ -49,12 +63,36 @@ export default function App() {
     }
   }, [status]);
 
-  // Real-time event polling
+  // Real-time data polling
   useEffect(() => {
     fetchTotal();
-    const interval = setInterval(fetchTotal, 5000);
+    const interval = setInterval(fetchTotal, 10000);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    if (address) {
+      fetchWalletData();
+    }
+  }, [address]);
+
+  const fetchWalletData = async () => {
+    try {
+      const account = await server.getAccount(address);
+      const xlmBalance = account.balances.find(b => b.asset_type === 'native')?.balance;
+      setBalance(xlmBalance);
+
+      // Fetch actual recent transactions from Horizon
+      const txs = await server.transactions().forAccount(address).limit(5).order("desc").call();
+      setRecentTxs(txs.records.map(tx => ({
+        id: tx.id,
+        hash: tx.hash,
+        time: new Date(tx.created_at).toLocaleTimeString()
+      })));
+    } catch (e) {
+      console.error("fetchWalletData error:", e);
+    }
+  };
 
   const connectWallet = async (type) => {
     try {
@@ -171,6 +209,7 @@ export default function App() {
         setShowCert(true);
 
         fetchTotal();
+        fetchWalletData();
         setAmounts(prev => ({ ...prev, [id]: "" }));
       } else {
         throw new Error(`Transaction failed: ${getTxResponse.resultMetaXdr}`);
@@ -201,10 +240,17 @@ export default function App() {
     }
   };
 
+  const [showWalletModal, setShowWalletModal] = useState(false);
+
   const disconnectWallet = () => {
     setAddress(null);
     setWalletType(null);
   };
+
+  const handleWalletSelect = (type) => {
+    setShowWalletModal(false);
+    connectWallet(type);
+  }
 
   return (
     <div className="app-container">
@@ -212,19 +258,17 @@ export default function App() {
         <div className="title">Nexus</div>
         <div>
           {!address ? (
-            <div style={{ display: 'flex', gap: '10px' }}>
-              <button className="wallet-btn" onClick={() => connectWallet("freighter")}>
-                Connect Freighter
-              </button>
-              <button className="wallet-btn" onClick={() => connectWallet("rabet")}>
-                Connect Rabet
-              </button>
-            </div>
+            <button className="wallet-btn" onClick={() => setShowWalletModal(true)}>
+              Connect Wallet
+            </button>
           ) : (
-            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-              <div className="wallet-connected">
-                {walletType === "freighter" ? "Freighter: " : "Rabet: "}
-                {address.substring(0, 5)}...{address.substring(address.length - 4)}
+            <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+              <div className="wallet-info">
+                <div className="wallet-balance">{balance ? `${Number(balance).toFixed(2)} XLM` : 'Loading...'}</div>
+                <div className="wallet-address">
+                  {walletType === "freighter" ? "Freighter: " : "Rabet: "}
+                  {address.substring(0, 5)}...{address.substring(address.length - 4)}
+                </div>
               </div>
               <button className="wallet-btn" style={{ padding: '8px 16px' }} onClick={disconnectWallet}>
                 Disconnect
@@ -244,15 +288,11 @@ export default function App() {
 
         {!address && (
           <div className="hero-wallets">
-            <h3 style={{ color: '#66fcf1', marginBottom: '15px' }}>Connect a wallet to start contributing:</h3>
+            <h3 style={{ color: '#66fcf1', marginBottom: '15px' }}>Let's fund the future of the planet together:</h3>
             <div style={{ display: 'flex', gap: '20px', justifyContent: 'center' }}>
-              <button className="wallet-btn-large" onClick={() => connectWallet("freighter")}>
-                <span style={{ fontSize: '1.2rem', fontWeight: '800' }}>Connect Freighter</span>
-                <span style={{ fontSize: '0.8rem', opacity: 0.8, display: 'block', marginTop: '5px' }}>Stellar's Official Wallet</span>
-              </button>
-              <button className="wallet-btn-large" onClick={() => connectWallet("rabet")}>
-                <span style={{ fontSize: '1.2rem', fontWeight: '800' }}>Connect Rabet</span>
-                <span style={{ fontSize: '0.8rem', opacity: 0.8, display: 'block', marginTop: '5px' }}>Open-source Multi-Chain Option</span>
+              <button className="wallet-btn-large" onClick={() => setShowWalletModal(true)}>
+                <span style={{ fontSize: '1.2rem', fontWeight: '800' }}>Connect Wallet</span>
+                <span style={{ fontSize: '0.8rem', opacity: 0.8, display: 'block', marginTop: '5px' }}>Select between Freighter or Rabet</span>
               </button>
             </div>
           </div>
@@ -260,7 +300,7 @@ export default function App() {
       </div>
 
       <section className="global-stats">
-        <h2>Total Impact Raised <span>{total} XLM</span></h2>
+        <h2>Total Impact Raised <span>{displayTotal} XLM</span></h2>
         <div className="progress-bar-container">
           <div
             className="progress-bar-fill"
@@ -272,9 +312,18 @@ export default function App() {
       <main className="campaigns-grid">
         {CAMPAIGNS.map((camp) => (
           <div key={camp.id} className="campaign-card">
+            <div className="campaign-badge">Trending</div>
             <img src={camp.img} alt={camp.title} className="campaign-image" />
             <h3 className="campaign-title">{camp.title}</h3>
             <p className="campaign-desc">{camp.desc}</p>
+
+            <div className="campaign-stats">
+              <div className="stat-label">Progress</div>
+              <div className="stat-value">{Math.floor((total / (GOAL / 3)) * 100)}%</div>
+            </div>
+            <div className="micro-progress">
+              <div className="micro-fill" style={{ width: `${Math.min((total / (GOAL / 3)) * 100, 100)}%` }}></div>
+            </div>
 
             <div className="donate-section">
               <input
@@ -337,6 +386,45 @@ export default function App() {
             </div>
           </div>
         </div>
+      )}
+
+      {showWalletModal && (
+        <div className="cert-overlay" onClick={() => setShowWalletModal(false)}>
+          <div className="cert-modal" onClick={e => e.stopPropagation()} style={{ padding: '30px', maxWidth: '400px' }}>
+            <h2 style={{ color: '#fff', marginBottom: '20px', textAlign: 'center' }}>Select Wallet</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+              <button className="wallet-btn-large" style={{ width: '100%', maxWidth: '100%' }} onClick={() => handleWalletSelect("freighter")}>
+                <span style={{ fontSize: '1.2rem', fontWeight: '800' }}>Freighter</span>
+                <span style={{ fontSize: '0.8rem', opacity: 0.8, display: 'block', marginTop: '5px' }}>Stellar's Official Wallet</span>
+              </button>
+              <button className="wallet-btn-large" style={{ width: '100%', maxWidth: '100%' }} onClick={() => handleWalletSelect("rabet")}>
+                <span style={{ fontSize: '1.2rem', fontWeight: '800' }}>Rabet</span>
+                <span style={{ fontSize: '0.8rem', opacity: 0.8, display: 'block', marginTop: '5px' }}>Open-source Multi-Chain</span>
+              </button>
+            </div>
+            <button className="cert-close-btn" style={{ width: '100%', marginTop: '20px' }} onClick={() => setShowWalletModal(false)}>Cancel</button>
+          </div>
+        </div>
+      )}
+      {address && recentTxs.length > 0 && (
+        <section className="recent-activity">
+          <h3 className="section-title">Your Recent Blockchain Activity</h3>
+          <div className="tx-list">
+            {recentTxs.map(tx => (
+              <a
+                key={tx.id}
+                href={`https://stellar.expert/explorer/testnet/tx/${tx.hash}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="tx-item"
+              >
+                <span className="tx-status-pill">SUCCESS</span>
+                <span className="tx-hash-display">Hash: {tx.hash.substring(0, 20)}...</span>
+                <span className="tx-time-display">{tx.time}</span>
+              </a>
+            ))}
+          </div>
+        </section>
       )}
     </div>
   );
