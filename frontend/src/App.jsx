@@ -201,6 +201,11 @@ export default function App() {
     }
   };
 
+  const disconnectWallet = () => {
+    setAddress(null);
+    setWalletType(null);
+  };
+
   return (
     <div className="app-container">
       <header className="header">
@@ -216,9 +221,14 @@ export default function App() {
               </button>
             </div>
           ) : (
-            <div className="wallet-connected">
-              {walletType === "freighter" ? "Freighter: " : "Rabet: "}
-              {address.substring(0, 5)}...{address.substring(address.length - 4)}
+            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+              <div className="wallet-connected">
+                {walletType === "freighter" ? "Freighter: " : "Rabet: "}
+                {address.substring(0, 5)}...{address.substring(address.length - 4)}
+              </div>
+              <button className="wallet-btn" style={{ padding: '8px 16px' }} onClick={disconnectWallet}>
+                Disconnect
+              </button>
             </div>
           )}
         </div>
