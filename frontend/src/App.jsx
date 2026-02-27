@@ -40,7 +40,7 @@ const CAMPAIGNS = [
     longDesc: "Access to clean drinking water is a basic human right. The Clean Water Initiative focuses on drilling deep-water wells and installing solar-powered purification systems in regions facing severe water scarcity. Each installation serves up to 500 people, significantly reducing waterborne diseases and empowering local communities by saving countless hours spent fetching water.",
     location: "Sub-Saharan Africa",
     organizer: "Water For Life",
-    img: "https://images.unsplash.com/photo-1541817441865-dc04d0a1b896?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+    img: "https://images.unsplash.com/photo-1516934824304-cb9aa6f4c784?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
   },
   {
     id: 5,
@@ -49,7 +49,7 @@ const CAMPAIGNS = [
     longDesc: "Energy poverty stifles economic growth and education. The Renewable Energy Transition project subsidizes and distributes off-grid solar lighting and charging kits to rural households. By replacing dangerous kerosene lamps, we improve indoor air quality, allow children to study after dark, and reduce fire hazards while fostering a shift toward sustainable energy.",
     location: "South Asia & Latin America",
     organizer: "Solar Action Network",
-    img: "https://images.unsplash.com/photo-1508514177221-188b1c77eca2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+    img: "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
   }
 ];
 
