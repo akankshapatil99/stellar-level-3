@@ -415,38 +415,43 @@ export default function App() {
       </div>
 
       <section id="how-it-works" className="how-it-works">
-        <h2 className="section-heading">How Nexus Works</h2>
+        <h2 className="section-heading">Operational Mechanics</h2>
         <div className="steps-grid">
           <div className="step-card">
             <span className="step-icon">🔗</span>
-            <h3>Connect Wallet</h3>
-            <p>Link your Freighter or Rabet wallet to interact securely with the Soroban network.</p>
+            <h3>1. Web3 Authentication</h3>
+            <p>Establish a secure cryptographic connection using a Stellar-compatible wallet (such as Freighter). This decentralized approach ensures you maintain absolute self-custody over your assets throughout the interaction, eliminating the need for traditional account creation or centralized data storage.</p>
           </div>
           <div className="step-card">
             <span className="step-icon">🌍</span>
-            <h3>Choose a Cause</h3>
-            <p>Browse our curated, high-impact campaigns mapped globally to make real change.</p>
+            <h3>2. Verified Initiative Selection</h3>
+            <p>Explore our rigorously vetted index of high-impact campaigns mapped across India. Each initiative is presented with verified operational data and target metrics, allowing contributors to make informed allocation decisions based on precise geographical and environmental objectives.</p>
           </div>
           <div className="step-card">
             <span className="step-icon">💡</span>
-            <h3>Fund Instantly</h3>
-            <p>Transactions are processed in seconds directly on-chain with 100% transparency.</p>
+            <h3>3. Direct On-Chain Allocation</h3>
+            <p>Execute transactions directly via the Soroban smart contract network. Capital transfers are finalized in under five seconds with near-zero latency and fractional protocol fees. This guarantees that 100% of your provided liquidity is routed transparently to the designated campaign.</p>
           </div>
         </div>
       </section>
 
       <section id="features" className="features-section">
-        <h2 className="section-heading">Platform Features</h2>
+        <h2 className="section-heading">Core Platform Capabilities</h2>
         <div className="features-grid">
           <div className="feature-card">
             <span className="feature-icon">🛡️</span>
-            <h3>Decentralized & Secure</h3>
-            <p>Smart contracts ensure your funds go exactly where they are supposed to, without middlemen.</p>
+            <h3>Immutable & Trustless</h3>
+            <p>Nexus operates entirely via Soroban smart contracts on the Stellar network. Code logic governs all capital routing, ensuring funds can only be disbursed to authorized destination wallets without interference from intermediaries or centralized failure points.</p>
           </div>
           <div className="feature-card">
             <span className="feature-icon">📜</span>
-            <h3>Gratitude Certificates</h3>
-            <p>Receive uniquely generated, verifiable certificates for your contributions on the blockchain.</p>
+            <h3>Cryptographic Proof of Impact</h3>
+            <p>Upon successful transaction finality, contributors are issued a dynamic, dynamically generated Digital Certificate of Gratitude. This artifact serves as immutable proof of your philanthropic allocation and is permanently recorded onto the public ledger.</p>
+          </div>
+          <div className="feature-card">
+            <span className="feature-icon">⚡</span>
+            <h3>High-Fidelity Settlement</h3>
+            <p>Leveraging the Stellar consensus protocol (SCP), Nexus facilitates borderless capital deployment. Whether you are allocating fractions of an XLM or substantial liquidity, settlement occurs globally with deterministic finality within seconds.</p>
           </div>
         </div>
       </section>
