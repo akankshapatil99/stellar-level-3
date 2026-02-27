@@ -69,6 +69,7 @@ export default function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCampaign, setSelectedCampaign] = useState(null);
+  const [showPlatformDetails, setShowPlatformDetails] = useState(false);
 
   const GOAL = 5000; // Platform-wide goal
 
@@ -414,47 +415,54 @@ export default function App() {
         </section>
       </div>
 
-      <section id="how-it-works" className="how-it-works">
-        <h2 className="section-heading">Operational Mechanics</h2>
-        <div className="steps-grid">
-          <div className="step-card">
-            <span className="step-icon">🔗</span>
-            <h3>1. Web3 Authentication</h3>
-            <p>Establish a secure cryptographic connection using a Stellar-compatible wallet (such as Freighter). This decentralized approach ensures you maintain absolute self-custody over your assets throughout the interaction, eliminating the need for traditional account creation or centralized data storage.</p>
-          </div>
-          <div className="step-card">
-            <span className="step-icon">🌍</span>
-            <h3>2. Verified Initiative Selection</h3>
-            <p>Explore our rigorously vetted index of high-impact campaigns mapped across India. Each initiative is presented with verified operational data and target metrics, allowing contributors to make informed allocation decisions based on precise geographical and environmental objectives.</p>
-          </div>
-          <div className="step-card">
-            <span className="step-icon">💡</span>
-            <h3>3. Direct On-Chain Allocation</h3>
-            <p>Execute transactions directly via the Soroban smart contract network. Capital transfers are finalized in under five seconds with near-zero latency and fractional protocol fees. This guarantees that 100% of your provided liquidity is routed transparently to the designated campaign.</p>
-          </div>
-        </div>
-      </section>
+      <div style={{ textAlign: 'center', margin: '60px 0 20px 0' }}>
+        <button
+          className="learn-more-btn"
+          style={{ background: 'var(--primary)', color: 'white', padding: '15px 40px', fontSize: '1.1rem', borderRadius: '15px', border: 'none', boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
+          onClick={() => setShowPlatformDetails(true)}
+        >
+          View Platform Architecture & Mechanics 👇
+        </button>
+      </div>
 
-      <section id="features" className="features-section">
-        <h2 className="section-heading">Core Platform Capabilities</h2>
-        <div className="features-grid">
-          <div className="feature-card">
-            <span className="feature-icon">🛡️</span>
-            <h3>Immutable & Trustless</h3>
-            <p>Nexus operates entirely via Soroban smart contracts on the Stellar network. Code logic governs all capital routing, ensuring funds can only be disbursed to authorized destination wallets without interference from intermediaries or centralized failure points.</p>
-          </div>
-          <div className="feature-card">
-            <span className="feature-icon">📜</span>
-            <h3>Cryptographic Proof of Impact</h3>
-            <p>Upon successful transaction finality, contributors are issued a dynamic, dynamically generated Digital Certificate of Gratitude. This artifact serves as immutable proof of your philanthropic allocation and is permanently recorded onto the public ledger.</p>
-          </div>
-          <div className="feature-card">
-            <span className="feature-icon">⚡</span>
-            <h3>High-Fidelity Settlement</h3>
-            <p>Leveraging the Stellar consensus protocol (SCP), Nexus facilitates borderless capital deployment. Whether you are allocating fractions of an XLM or substantial liquidity, settlement occurs globally with deterministic finality within seconds.</p>
+      {showPlatformDetails && (
+        <div className="cert-overlay" onClick={() => setShowPlatformDetails(false)} style={{ overflowY: 'auto', padding: '40px 10px' }}>
+          <div className="cert-modal" onClick={e => e.stopPropagation()} style={{ maxWidth: '800px', padding: '50px', background: 'var(--bg-main)' }}>
+            <button className="close-modal-icon" style={{ top: '20px', right: '20px', color: 'black', background: '#eee' }} onClick={() => setShowPlatformDetails(false)}>✕</button>
+            <h2 className="section-heading" style={{ fontSize: '2.2rem', marginBottom: '40px' }}>Nexus Architecture</h2>
+
+            <div style={{ marginBottom: '35px' }}>
+              <h3 style={{ color: 'var(--text-bold)', fontSize: '1.4rem', marginBottom: '10px' }}>🔗 1. Web3 Authentication</h3>
+              <p style={{ color: '#64748b', fontSize: '1.05rem', lineHeight: '1.7' }}>Establish a secure cryptographic connection using a Stellar-compatible wallet (such as Freighter). This decentralized approach ensures you maintain absolute self-custody over your assets throughout the interaction, eliminating the need for traditional account creation or centralized data storage.</p>
+            </div>
+
+            <div style={{ marginBottom: '35px' }}>
+              <h3 style={{ color: 'var(--text-bold)', fontSize: '1.4rem', marginBottom: '10px' }}>🌍 2. Verified Initiative Selection</h3>
+              <p style={{ color: '#64748b', fontSize: '1.05rem', lineHeight: '1.7' }}>Explore our rigorously vetted index of high-impact campaigns mapped across India. Each initiative is presented with verified operational data and target metrics, allowing contributors to make informed allocation decisions based on precise geographical and environmental objectives.</p>
+            </div>
+
+            <div style={{ marginBottom: '35px' }}>
+              <h3 style={{ color: 'var(--text-bold)', fontSize: '1.4rem', marginBottom: '10px' }}>💡 3. Direct On-Chain Allocation</h3>
+              <p style={{ color: '#64748b', fontSize: '1.05rem', lineHeight: '1.7' }}>Execute transactions directly via the Soroban smart contract network. Capital transfers are finalized in under five seconds with near-zero latency and fractional protocol fees. This guarantees that 100% of your provided liquidity is routed transparently to the designated campaign.</p>
+            </div>
+
+            <div style={{ marginBottom: '35px' }}>
+              <h3 style={{ color: 'var(--text-bold)', fontSize: '1.4rem', marginBottom: '10px' }}>🛡️ Immutable & Trustless</h3>
+              <p style={{ color: '#64748b', fontSize: '1.05rem', lineHeight: '1.7' }}>Nexus operates entirely via Soroban smart contracts on the Stellar network. Code logic governs all capital routing, ensuring funds can only be disbursed to authorized destination wallets without interference from intermediaries or centralized failure points.</p>
+            </div>
+
+            <div style={{ marginBottom: '35px' }}>
+              <h3 style={{ color: 'var(--text-bold)', fontSize: '1.4rem', marginBottom: '10px' }}>📜 Cryptographic Proof of Impact</h3>
+              <p style={{ color: '#64748b', fontSize: '1.05rem', lineHeight: '1.7' }}>Upon successful transaction finality, contributors are issued a dynamically generated Digital Certificate of Gratitude. This artifact serves as immutable proof of your philanthropic allocation and is permanently recorded onto the public ledger.</p>
+            </div>
+
+            <div>
+              <h3 style={{ color: 'var(--text-bold)', fontSize: '1.4rem', marginBottom: '10px' }}>⚡ High-Fidelity Settlement</h3>
+              <p style={{ color: '#64748b', fontSize: '1.05rem', lineHeight: '1.7' }}>Leveraging the Stellar consensus protocol (SCP), Nexus facilitates borderless capital deployment. Whether you are allocating fractions of an XLM or substantial liquidity, settlement occurs globally with deterministic finality within seconds.</p>
+            </div>
           </div>
         </div>
-      </section>
+      )}
 
       <h2 id="campaigns" className="section-heading" style={{ marginTop: '80px', marginBottom: '20px' }}>Explore Campaigns</h2>
       <div className="search-section" style={{ padding: '0 2rem 2rem 2rem', textAlign: 'center' }}>
