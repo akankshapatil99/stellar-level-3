@@ -61,3 +61,8 @@ A decentralized crowdfunding application built on the Stellar network. This appl
 # Architecture
 - **Frontend**: Contains the interactive Vite React app.
 - **Contract**: Contains the Stellar Smart Contract configuration needed to execute campaign state on the Soroban testnet.
+
+# Level 2 Features Completed
+- **Loading States**: Displayed while loading blockchain totals.
+- **Caching**: LocalStorage implemented for fast initial renders.
+- **Testing**: Vitest unit testing added with 3 passing tests.
