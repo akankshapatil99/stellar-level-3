@@ -13,7 +13,7 @@ const CAMPAIGNS = [
     longDesc: "The Ganges River is critical to India's ecosystem but suffers from severe pollution. Our initiative deploys advanced drone systems and works with local communities to collect waste before it degrades. We ensure safe extraction and recycling to restore the river's natural beauty.",
     location: "Varanasi, India",
     organizer: "Ganga Action Parivar",
-    img: "https://images.unsplash.com/photo-1620215746939-5095d3110e53?auto=format&fit=crop&w=800&q=80"
+    img: "/campaigns/1.png"
   },
   {
     id: 2,
@@ -22,7 +22,7 @@ const CAMPAIGNS = [
     longDesc: "Deforestation in the Himalayas contributes to landslides and climate change. We partner with local mountain communities to plant millions of native tree species. Every tree planted is tracked, helping prevent soil erosion, offset carbon, and restore biodiversity in the region.",
     location: "Uttarakhand, India",
     organizer: "Himalayan Green Earth",
-    img: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+    img: "/campaigns/2.png"
   },
   {
     id: 3,
@@ -31,7 +31,7 @@ const CAMPAIGNS = [
     longDesc: "Millions of children in rural India lack access to digital education. This project provides rugged, solar-powered laptops and satellite internet access to underserved schools. Our program includes technical training for teachers to ensure the equipment provides lasting educational value.",
     location: "Bihar, India",
     organizer: "Tech For Tomorrow India",
-    img: "https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+    img: "/campaigns/3.png"
   },
   {
     id: 4,
@@ -40,7 +40,7 @@ const CAMPAIGNS = [
     longDesc: "Empowering rural women by providing them with the capital and training needed to create sustainable businesses producing traditional Indian textiles and crafts. This fund helps them reach broader markets, preserve cultural heritage, and achieve long-term financial independence.",
     location: "Rajasthan, India",
     organizer: "Swayam Nari",
-    img: "https://images.unsplash.com/photo-1582200230232-a5d4d3d7b80b?auto=format&fit=crop&w=800&q=80"
+    img: "/campaigns/4.png"
   },
   {
     id: 5,
@@ -49,7 +49,7 @@ const CAMPAIGNS = [
     longDesc: "Energy poverty severely affects healthcare delivery. This project installs off-grid solar panels in rural clinics across Assam. By replacing unreliable grid power, we ensure life-saving vaccines remain refrigerated, essential medical equipment operates, and doctors can treat patients safely after dark.",
     location: "Assam, India",
     organizer: "Solar Health India",
-    img: "https://images.unsplash.com/photo-1508514177221-188b1c77eca2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+    img: "/campaigns/5.png"
   }
 ];
 
