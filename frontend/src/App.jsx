@@ -32,17 +32,35 @@ const CAMPAIGNS = [
     location: "Sub-Saharan Africa & South Asia",
     organizer: "Tech For Tomorrow",
     img: "https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    id: 4,
+    title: "Clean Water Initiative",
+    desc: "Building sustainable wells and water purification systems in drought-affected areas.",
+    longDesc: "Access to clean drinking water is a basic human right. The Clean Water Initiative focuses on drilling deep-water wells and installing solar-powered purification systems in regions facing severe water scarcity. Each installation serves up to 500 people, significantly reducing waterborne diseases and empowering local communities by saving countless hours spent fetching water.",
+    location: "Sub-Saharan Africa",
+    organizer: "Water For Life",
+    img: "https://images.unsplash.com/photo-1541817441865-dc04d0a1b896?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    id: 5,
+    title: "Renewable Energy Transition",
+    desc: "Providing off-grid solar kits to low-income households without reliable electricity.",
+    longDesc: "Energy poverty stifles economic growth and education. The Renewable Energy Transition project subsidizes and distributes off-grid solar lighting and charging kits to rural households. By replacing dangerous kerosene lamps, we improve indoor air quality, allow children to study after dark, and reduce fire hazards while fostering a shift toward sustainable energy.",
+    location: "South Asia & Latin America",
+    organizer: "Solar Action Network",
+    img: "https://images.unsplash.com/photo-1508514177221-188b1c77eca2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
   }
 ];
 
 export default function App() {
   const [address, setAddress] = useState(null);
   const [platformTotal, setPlatformTotal] = useState(0);
-  const [campaignTotals, setCampaignTotals] = useState({ 1: 0, 2: 0, 3: 0 });
+  const [campaignTotals, setCampaignTotals] = useState({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 });
   const [displayTotal, setDisplayTotal] = useState(0);
   const [status, setStatus] = useState("");
   const [txHash, setTxHash] = useState("");
-  const [amounts, setAmounts] = useState({ 1: "", 2: "", 3: "" });
+  const [amounts, setAmounts] = useState({ 1: "", 2: "", 3: "", 4: "", 5: "" });
   const [walletType, setWalletType] = useState(null);
   const [showCert, setShowCert] = useState(false);
   const [lastDonation, setLastDonation] = useState({ amount: 0, campaign: "" });
