@@ -2,6 +2,10 @@
 
 A decentralized crowdfunding application built on the Stellar network. This application features multiple wallet integrations (Freighter, Rabet), dynamic smart contract deployment from the frontend, campaign creation and management, real-time transaction event tracking, and downloadable gratitude certificates for donors.
 
+# Live demo link
+https://frontend-liard-beta-68.vercel.app/
+
+
 # Features
 
 - **Multi-Wallet Integration**: Connect seamlessly using Freighter, Rabet wallets.
