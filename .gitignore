@@ -1,0 +1,16 @@
+# Local Netlify folder
+.netlify
+
+# Build directories
+target/
+target_*/
+node_modules/
+dist/
+
+# Rust test outputs
+test_output.txt
+test_output_utf8.txt
+
+# Editor and OS files
+.vscode/
+.DS_Store

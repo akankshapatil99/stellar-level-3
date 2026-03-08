@@ -1,4 +1,4 @@
-# Stellar Crowdfunding Level 2
+# Stellar Crowdfunding Level 3
 
 A decentralized crowdfunding application built on the Stellar network. This application features multiple wallet integrations (Freighter, Rabet), dynamic smart contract deployment from the frontend, campaign creation and management, real-time transaction event tracking, and downloadable gratitude certificates for donors.
 
@@ -52,6 +52,9 @@ Below is a step-by-step visual walkthrough of the platform's features, including
 
 **11. User Transaction History**  
 <img src="l2ss/Screenshot%202026-03-03%20005154.png" alt="Transaction History" width="800">
+
+**12. cargo test**  
+<img src="l2ss/cargo tests.png" alt="cargo tests" width="800">
 
 # Getting Started
 
