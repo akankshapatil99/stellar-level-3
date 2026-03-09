@@ -71,8 +71,8 @@ impl Crowdfunding {
         }
 
         // Cross-contract call to transfer XLM to the contract
-        let client = token::Client::new(&env, &token);
-        client.transfer(&from, &env.current_contract_address(), &amount);
+        let token_client = token::Client::new(&env, &token);
+        token_client.transfer(&from, &env.current_contract_address(), &amount);
 
         // Update platform-wide total
         let mut total: i128 = env.storage()

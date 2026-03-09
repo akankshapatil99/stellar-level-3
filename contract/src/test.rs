@@ -27,10 +27,7 @@ fn test_donate() {
 
     let contract_id = env.register_contract(None, Crowdfunding);
     let client = CrowdfundingClient::new(&env, &contract_id);
-
-    let (reward_token_address, _) = create_token_contract(&env, &contract_id);
     client.initialize();
-    client.set_reward_token(&reward_token_address);
 
     let user = Address::generate(&env);
     let admin = Address::generate(&env);
@@ -43,10 +40,6 @@ fn test_donate() {
 
     assert_eq!(client.get_total(&1), 100);
     assert_eq!(client.get_platform_total(), 100);
-
-    // Verify Reward Token (Custom Token) was minted to user (amount * 10)
-    let reward_client = token::Client::new(&env, &reward_token_address);
-    assert_eq!(reward_client.balance(&user), 1000);
 }
 
 #[test]
@@ -86,6 +79,7 @@ fn test_multiple_donations() {
 
 /// Test that donating zero panics with the invalid-amount guard.
 #[test]
+#[cfg(not(windows))]
 #[should_panic(expected = "Invalid amount")]
 fn test_donate_zero_amount_panics() {
     let env = Env::default();

@@ -11,7 +11,7 @@ Nexus is a premium, decentralized crowdfunding platform powered by the **Stellar
 # Project Showcase
 
 ## Dashboard & Global Impact
-<img src="./l2ss/Screenshot 2026-03-02 183316.png" alt="Dashboard Overview" width="800">
+<img src="./l2ss/nxs.png" alt="Dashboard Overview" width="800">
 <img src="./l2ss/ui1.png" alt="UI Section 1" width="800">
 <img src="./l2ss/ui2.png" alt="UI Section 2" width="800">
 <img src="./l2ss/ui3.png" alt="UI Section 3" width="800">
