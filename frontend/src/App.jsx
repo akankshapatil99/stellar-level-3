@@ -428,7 +428,7 @@ export default function App() {
   const donateToCampaign = async (id) => {
     if (!address) return alert("Please connect your wallet first.");
     const amt = amounts[id];
-    if (Number(amt) <= 0) return alert("Enter a valid amount.");
+    if (!amt || Number(amt) <= 0) return alert("Please enter a valid donation amount greater than 0 XLM.");
 
     try {
       setStatus(`Pending: Prompting Freighter for ${amt} XLM`);
@@ -859,6 +859,8 @@ export default function App() {
                           <input
                             type="number"
                             placeholder="0.00"
+                            min="0.01"
+                            step="0.01"
                             className="amount-input"
                             value={amounts[camp.id]}
                             onChange={(e) => handleAmountChange(camp.id, e.target.value)}
