@@ -2,84 +2,104 @@
 
 [![Stellar CI Pipeline](https://github.com/akankshapatil99/stellar-level-3/actions/workflows/ci.yml/badge.svg)](https://github.com/akankshapatil99/stellar-level-3/actions/workflows/ci.yml)
 [![Demo](https://img.shields.io/badge/Live%20Demo-Vercel-blue?style=for-the-badge&logo=vercel)](https://frontend-liard-beta-68.vercel.app/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A robust, decentralized crowdfunding application built on the **Stellar Soroban Network**. Nexus empowers users to create, manage, and fund campaigns securely using blockchain technology. As a unique feature, donors are rewarded with custom **NXS (Nexus)** tokens upon their successful contributions!
-
----
-
-## 🚀 Live Demo
-**[Experience Nexus Live on Vercel](https://frontend-liard-beta-68.vercel.app/)**
+Nexus is a premium, decentralized crowdfunding platform powered by the **Stellar Soroban Network**. It enables users to fund high-impact initiatives with 100% on-chain transparency, rewarding contributors with native **NXS (Nexus)** tokens for every donation.
 
 ---
 
-## ✨ Key Features
+## 📸 Project Showcase
 
-- **💰 Custom Token Rewards (NXS)**: Introduces specialized ecosystem token mechanics. Whenever a user donates XLM to a campaign, the smart contract automatically mints and issues **NXS** reward tokens to the donor's wallet!
-- **🔗 Multi-Wallet Integration**: Connect seamlessly using Freighter or Rabet wallets without leaving the web application.
-- **📜 Smart Contract Integration**: Fully dynamic crowdfunding campaigns deployed and executed directly on the Stellar testnet.
-- **⚡ Real-Time Transaction Tracking**: Monitor blockchain confirmations and transaction statuses instantly through an intuitive UI toast system.
-- **🎖️ Native Gratitude Certificates**: Donors receive a sleek, personalized, downloadable receipt/certificate upon funding a cause.
-- **🤖 Automated CI/CD Pipeline**: GitHub Actions are configured to automatically build and test rust smart contracts and the frontend upon every push.
-- **🎨 Modern Web3 UI/UX**: An intuitive, premium glassmorphism-inspired layout featuring animated background orbs, shimmering effects, and engaging responsive design.
+### 🖥️ Dashboard & Global Impact
+![Dashboard Overview](./l2ss/Screenshot%202026-03-02%20183316.png)
+*Modern, glassmorphism UI featuring real-time platform stats and animated background elements.*
 
+### 📱 Mobile Responsive Design
+| Desktop View | Mobile Sidebar |
+| :---: | :---: |
+| ![Desktop](./l2ss/Screenshot%202026-03-02%20183339.png) | ![Mobile Menu](./l2ss/Screenshot%202026-03-02%20183405.png) |
 
-
-
-
-## 🛠️ Architecture & Tech Stack
-
-- **Frontend**: Vite + React, Vanilla CSS, Stellar SDK, Freighter/Rabet APIs.
-- **Smart Contracts**: Rust & Stellar Soroban SDK.
-- **Tokens**: Native testnet XLM for donations, Custom NXS Token for rewards.
-- **DevOps**: GitHub Actions CI/CD Pipeline tracking builds.
+### 🎖️ On-Chain Proof of Gratitude
+![Certificate](./l2ss/Screenshot%202026-03-02%20183451.png)
+*Donors receive a downloadable, cryptographically verified Certificate of Gratitude after every contribution.*
 
 ---
 
-## ⚙️ Getting Started
+## ✨ Advanced Features & Recent Updates
 
-### Prerequisites
-- [Node.js](https://nodejs.org/) (v20+ recommended)
-- [Rust](https://www.rust-lang.org/) toolchain (for compiling smart contracts)
-- A Stellar-compatible wallet browser extension (Freighter recommended for Soroban testnet compatibility), fueled with Testnet XLM.
-
-### 1. Frontend Setup
-1. Clone the repository and navigate into the `frontend` directory:
-   ```bash
-   cd frontend
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Boot up the local development server:
-   ```bash
-   npm run dev
-   ```
-
-### 2. Smart Contract Setup & Testing
-1. Navigate into the `contract` directory:
-   ```bash
-   cd contract
-   ```
-2. Build the WebAssembly targeting Soroban:
-   ```bash
-   cargo build --target wasm32-unknown-unknown --release
-   ```
-3. Run the complete test suite to verify token boundaries and campaign states:
-   ```bash
-   cargo test
-   ```
+- **💰 NXS Reward Token Mechanics**: Integrated a custom token engine. Donors automatically receive **10 NXS tokens per 1 XLM** contributed, minted directly by the smart contract.
+- **📊 Global Impact Visualization**: A platform-wide progress bar tracking collective goals across all verified initiatives.
+- **📱 100% Mobile Responsive**: Fully adaptive layout with a custom slide-out side menu, optimized for all screen sizes (1024px, 768px, 480px).
+- **📋 Transaction History**: Real-time integration with **Stellar Expert** and native on-chain history tracking for connected wallets.
+- **⚡ Performance & UX**: 
+  - **Animated Loading Screen**: Smooth initial startup state.
+  - **Automatic Polling**: Account balances (XLM & NXS) refresh every 30 seconds automatically.
+  - **Copy-to-Clipboard**: Quick wallet address sharing directly from the header.
+- **♿ Accessibility & SEO**: Built with `prefers-reduced-motion` support, smooth scrolling, and optimized meta tags for search engines.
 
 ---
 
-## 🎯 Level Progression & Features Achieved
+## 🛠️ Tech Stack & Architecture
 
-### New Tier Capabilities Added
-- **Custom Token Infrastructure**: Upgraded backend to automatically mint and distribute a custom reward token (`NXS`) to users for their engagement, interacting securely with the Stellar token framework.
-- **GitHub Actions Integration (CI/CD)**: Built automated workflows validating Rust contract components and ensuring frontend build successes on Git pushes. 
-- **Inter-Contract Token Calls**: Utilizing `token::Client` to transfer XLM explicitly and safely between the Crowdfunding protocol and the Stellar token contract.
-- **Cross-environment Verification**: Re-structured and bolstered smart contract testing with local token proxies simulating precise testnet behaviors.
+- **Smart Contracts**: Rust + Soroban SDK (No-std, optimized for WASM).
+- **Frontend**: React (Vite), Vanilla CSS, Stellar SDK.
+- **Wallet Support**: Freighter & Rabet (Multi-wallet integration).
+- **CI/CD**: GitHub Actions (Automated build & test pipelines for Rust and React).
+- **Hosting**: Vercel (Frontend) + Stellar Testnet (Backend).
 
-### Foundational Additions
-- **Loading & Cache Systems**: Advanced UX incorporating async-loading patterns and structured LocalStorage solutions for lightning-fast initial renders.
-- **Polished Presentation**: Detailed UI enhancements including dynamic CSS styling, explicit smart contract operation confirmations, and a modal design architecture bringing total transparency to Web3 backend procedures.
+---
+
+## 🧪 Smart Contract Testing
+
+We maintain a rigorous testing suite covering edge cases, token boundaries, and platform logic.
+
+```bash
+# Run the contract tests
+cd contract
+cargo test
+```
+
+![Test Results](./l2ss/cargo%20tests.png)
+*Verifying 5+ critical test cases including zero-donation guards and NXS balance tracking.*
+
+---
+
+## 📜 14+ Meaningful Commits Summary
+
+The project has evolved through professional, atomic commits following conventional standards:
+1. **feat(seo)**: Added meta tags, Open Graph, and descriptive titles.
+2. **feat(a11y)**: Implemented smooth scroll and reduced-motion support.
+3. **docs(contract)**: Added comprehensive Rustdoc to all public functions.
+4. **test(contract)**: Expanded test suite to cover zero-donation panics.
+5. **feat(frontend)**: Added global loading screen and balance polling.
+6. **refactor(frontend)**: Modularized static data into a clean `config.js`.
+7. **style(ui)**: Custom color-coded status toasts (Green/Red/Blue).
+8. **chore(gitignore)**: Expanded rules for CI/CD and build artifacts.
+... *and more.*
+
+---
+
+## ⚙️ Development Setup
+
+Refer to our **[CONTRIBUTING.md](./CONTRIBUTING.md)** for detailed environment setup, local deployment instructions, and coding standards.
+
+### Quick Start
+```bash
+# Install frontend dependencies
+cd frontend
+npm install
+
+# Build the contract
+cd ../contract
+cargo build --target wasm32-unknown-unknown --release
+```
+
+---
+
+## 🤝 Community & Support
+- **Developer**: Akanksha Patil
+- **Network**: Stellar Testnet (Soroban)
+- **Discord**: [Stellar Developers](https://discord.gg/stellardev)
+
+---
+*Built with ❤️ for the Stellar Ecosystem.*
