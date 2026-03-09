@@ -435,6 +435,18 @@ body::before {
   font-size: 0.9rem;
 }
 
+/* Hide number input spinners for cleaner UI */
+.amount-input::-webkit-outer-spin-button,
+.amount-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.amount-input[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
 .donate-btn {
   background: var(--text-bold);
   border: none;
@@ -473,6 +485,22 @@ body::before {
 
 .status-toast.visible {
   transform: translateY(0);
+}
+
+/* Toast colour variants based on status prefix */
+.status-toast.Success {
+  background: #065f46;
+  border-left: 4px solid #10b981;
+}
+
+.status-toast.Failed {
+  background: #7f1d1d;
+  border-left: 4px solid #ef4444;
+}
+
+.status-toast.Pending {
+  background: #1e3a5f;
+  border-left: 4px solid #3b82f6;
 }
 
 /* RECENT ACTIVITY */
