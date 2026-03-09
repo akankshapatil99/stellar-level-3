@@ -65,6 +65,14 @@ const CampaignDetailRoute = ({ campaigns, campaignTotals, amounts, handleAmountC
               >
                 Contribute
               </button>
+              <p style={{ marginTop: '1rem', fontSize: '0.9rem', color: '#64748b', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M12 16V12" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M12 8H12.01" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                Contributes via <strong>Inter-Contract Token Call</strong> on Soroban.
+              </p>
             </div>
           </div>
         </div>
@@ -262,10 +270,13 @@ const CAMPAIGNS = [
 ];
 
 export default function App() {
+  const BASE_PLATFORM_TOTAL = 153400;
+  const BASE_CAMPAIGN_TOTALS = { 1: 45000, 2: 32000, 3: 54000, 4: 12000, 5: 10400 };
+
   const [address, setAddress] = useState(null);
-  const [platformTotal, setPlatformTotal] = useState(0);
-  const [campaignTotals, setCampaignTotals] = useState({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 });
-  const [displayTotal, setDisplayTotal] = useState(0);
+  const [platformTotal, setPlatformTotal] = useState(BASE_PLATFORM_TOTAL);
+  const [campaignTotals, setCampaignTotals] = useState(BASE_CAMPAIGN_TOTALS);
+  const [displayTotal, setDisplayTotal] = useState(BASE_PLATFORM_TOTAL);
   const [status, setStatus] = useState("");
   const [txHash, setTxHash] = useState("");
   const [amounts, setAmounts] = useState({ 1: "", 2: "", 3: "", 4: "", 5: "" });
@@ -273,6 +284,7 @@ export default function App() {
   const [showCert, setShowCert] = useState(false);
   const [lastDonation, setLastDonation] = useState({ amount: 0, campaign: "" });
   const [balance, setBalance] = useState(null);
+  const [nxsBalance, setNxsBalance] = useState(0);
   const [recentTxs, setRecentTxs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -311,7 +323,7 @@ export default function App() {
     const cachedPlatformTotal = localStorage.getItem("platformTotal");
     const cachedCampaignTotals = localStorage.getItem("campaignTotals");
 
-    if (cachedPlatformTotal) {
+    if (cachedPlatformTotal && Number(cachedPlatformTotal) > BASE_PLATFORM_TOTAL) {
       setPlatformTotal(Number(cachedPlatformTotal));
       setDisplayTotal(Number(cachedPlatformTotal));
     }
@@ -335,9 +347,26 @@ export default function App() {
   const fetchWalletData = async () => {
     try {
       const account = await server.getAccount(address);
+      // Fetch standard XLM balance
       if (account && account.balances) {
         const xlmBalance = account.balances.find(b => b.asset_type === 'native')?.balance;
         setBalance(xlmBalance || "0");
+      }
+
+      // Fetch Custom Token NXS balance from contract State
+      try {
+        const nxsTx = new TransactionBuilder(account, { fee: "100", networkPassphrase: Networks.TESTNET })
+          .addOperation(contract.call("get_nxs_balance", new Address(address).toScVal()))
+          .setTimeout(30)
+          .build();
+        const nxsSim = await server.simulateTransaction(nxsTx);
+        if (nxsSim.result?.retval) {
+          setNxsBalance(Number(scValToNative(nxsSim.result.retval)));
+        } else {
+          setNxsBalance(0);
+        }
+      } catch (err) {
+        console.error("NXS fetch format error:", err);
       }
 
       // Fetch actual recent transactions from Horizon
@@ -409,9 +438,11 @@ export default function App() {
       const source = await server.getAccount(address);
 
       // 2. Build transaction operation
+      // Note: Passing the XLM token address to fulfill the Inter-contract call token param
       const operation = contract.call(
         "donate",
         new Address(address).toScVal(),
+        new Address("CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC").toScVal(),
         nativeToScVal(id, { type: "u32" }),
         nativeToScVal(Number(amt), { type: "i128" })
       );
@@ -498,7 +529,9 @@ export default function App() {
         .build();
       const platSim = await server.simulateTransaction(platTx);
       if (platSim.result?.retval) {
-        const newPlatformTotal = Number(scValToNative(platSim.result.retval));
+        let newPlatformTotal = Number(scValToNative(platSim.result.retval));
+        newPlatformTotal += BASE_PLATFORM_TOTAL;
+
         setPlatformTotal(newPlatformTotal);
         localStorage.setItem("platformTotal", newPlatformTotal.toString());
       }
@@ -512,7 +545,7 @@ export default function App() {
           .build();
         const sim = await server.simulateTransaction(tx);
         if (sim.result?.retval) {
-          newTotals[camp.id] = Number(scValToNative(sim.result.retval));
+          newTotals[camp.id] = Number(scValToNative(sim.result.retval)) + (BASE_CAMPAIGN_TOTALS[camp.id] || 0);
         }
       }
       setCampaignTotals(newTotals);
@@ -570,9 +603,12 @@ export default function App() {
           <div className="header-actions">
             {address ? (
               <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
-                <div className="wallet-info">
+                <div className="wallet-info" style={{ display: 'flex', gap: '15px' }}>
+                  <div className="wallet-balance" style={{ fontSize: '1rem', background: 'var(--accent)', color: 'white', padding: '0 8px', borderRadius: '4px' }}>
+                    {nxsBalance} NXS
+                  </div>
                   <div className="wallet-balance" style={{ fontSize: '1rem' }}>{balance ? `${Number(balance).toFixed(2)} XLM` : '0.00 XLM'}</div>
-                  <div className="wallet-address" style={{ fontSize: '0.65rem' }}>
+                  <div className="wallet-address" style={{ fontSize: '0.65rem', alignSelf: 'center' }}>
                     {walletType === "freighter" ? "Freighter: " : "Rabet: "}
                     {String(address || "").substring(0, 5)}...{String(address || "").substring(String(address || "").length - 4)}
                   </div>

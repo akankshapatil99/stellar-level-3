@@ -1,4 +1,4 @@
-# Stellar Crowdfunding Level 3
+# Stellar Crowdfunding Level 4
 
 A decentralized crowdfunding application built on the Stellar network. This application features multiple wallet integrations (Freighter, Rabet), dynamic smart contract deployment from the frontend, campaign creation and management, real-time transaction event tracking, and downloadable gratitude certificates for donors.
 
@@ -85,7 +85,13 @@ Below is a step-by-step visual walkthrough of the platform's features, including
 - **Frontend**: Contains the interactive Vite React app.
 - **Contract**: Contains the Stellar Smart Contract configuration needed to execute campaign state on the Soroban testnet.
 
-# Level 2 Features Completed
+# Level 4 Features Completed
+- **Inter-Contract Token Call**: Utilizing `token::Client` to transfer XLM explicitly between the Crowdfunding protocol and the Soroban token contract, properly authenticating the external contract instead of just incrementing a variable.
+- **Smart Contract Token Testing**: Rewrote the cross-environment tests to utilize a deployed token proxy to fully validate standard token boundaries and cross-contract balances.
+- **Rich Initial State**: Added a set of baseline configuration constants to prevent the dApp from feeling empty (showing 0) due to testnet resets.
+- **UI Clarification**: Re-arranged elements under the "Contribute" button to explicitly clarify that the approval triggers an Inter-Contract call, bringing transparency to backend procedures.
+
+# Level 2 & 3 Features Completed
 - **Loading States**: Displayed while loading blockchain totals.
 - **Caching**: LocalStorage implemented for fast initial renders.
-- **Testing**: Vitest unit testing added with 3 passing tests.
+- **Testing**: Cargo and unit testing integrated directly.
