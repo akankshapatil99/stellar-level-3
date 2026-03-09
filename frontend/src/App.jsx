@@ -640,6 +640,19 @@ export default function App() {
                   Contribute to critical causes with 100% transparency.
                 </p>
 
+                <div className="global-progress-container" style={{ maxWidth: '600px', margin: '40px auto 0', padding: '0 20px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px', fontSize: '0.9rem', color: 'var(--text-main)', letterSpacing: '1px', textTransform: 'uppercase', fontWeight: '700' }}>
+                    <span>Global Impact Goal</span>
+                    <span>{Math.floor((displayTotal / GOAL) * 100)}%</span>
+                  </div>
+                  <div style={{ height: '8px', background: 'rgba(255,255,255,0.1)', borderRadius: '4px', overflow: 'hidden' }}>
+                    <div style={{ height: '100%', background: 'var(--accent)', width: `${Math.min((displayTotal / GOAL) * 100, 100)}%`, transition: 'width 2s cubic-bezier(0.19, 1, 0.22, 1)' }}></div>
+                  </div>
+                  <div style={{ marginTop: '10px', color: '#94a3b8', fontSize: '0.85rem' }}>
+                    Currently raised <strong>{displayTotal.toLocaleString()} XLM</strong> across all verified initiatives.
+                  </div>
+                </div>
+
                 {!address && (
                   <div className="hero-wallets" style={{ padding: '20px', animation: 'floatOrb 6s ease-in-out infinite alternate', display: 'inline-block' }}>
                     <button className="wallet-btn-large" onClick={() => setShowWalletModal(true)} style={{ background: 'linear-gradient(135deg, #0f172a 0%, #3b82f6 100%)', boxShadow: '0 10px 25px -5px rgba(59, 130, 246, 0.5)', border: 'none' }}>
