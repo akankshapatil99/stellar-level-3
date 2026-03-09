@@ -526,20 +526,7 @@ body::before {
   padding: 60px;
 }
 
-@media (max-width: 900px) {
-  .hero-title {
-    font-size: 3rem;
-  }
-
-  .campaign-card {
-    grid-template-columns: 1fr;
-  }
-
-  .header {
-    flex-direction: column;
-    gap: 20px;
-  }
-}
+/* Responsive rules moved to end of file */
 
 /* Wallet Modal Refinements */
 .wallet-modal {
@@ -904,17 +891,7 @@ body::before {
   gap: 60px;
 }
 
-@media (max-width: 900px) {
-  .footer {
-    grid-template-columns: 1fr;
-    padding: 60px 40px;
-  }
-
-  .nav-links {
-    display: none;
-    /* Hide on mobile for simplicity */
-  }
-}
+/* Footer responsive rules moved to end of file */
 
 .footer-brand h2 {
   font-size: 2.2rem;
@@ -1032,3 +1009,469 @@ body::before {
 }
 
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ========================================
+   RESPONSIVE DESIGN - TABLET (max-width: 1024px)
+   ======================================== */
+@media (max-width: 1024px) {
+  .menubar-content {
+    padding: 12px 24px;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .title::before {
+    font-size: 1.5rem;
+    margin-right: 8px;
+  }
+
+  .hero-title {
+    font-size: 3rem;
+    letter-spacing: -1px;
+  }
+
+  .hero-subtitle {
+    font-size: 1.1rem;
+  }
+
+  .global-stats h2 span {
+    font-size: 3.5rem;
+  }
+
+  .stats-card {
+    padding: 35px;
+  }
+
+  .campaign-card {
+    flex: 0 0 350px;
+  }
+
+  .campaign-content {
+    padding: 28px;
+  }
+
+  .campaign-title {
+    font-size: 1.5rem;
+  }
+
+  .steps-grid {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0 24px;
+  }
+
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    padding: 0 24px;
+  }
+
+  .section-heading {
+    font-size: 2.2rem;
+  }
+
+  .how-it-works,
+  .features-section {
+    padding: 60px 0;
+  }
+
+  .step-card,
+  .feature-card {
+    padding: 35px 25px;
+  }
+
+  .footer {
+    padding: 60px 40px;
+    gap: 40px;
+  }
+}
+
+/* ========================================
+   RESPONSIVE DESIGN - MOBILE (max-width: 768px)
+   ======================================== */
+@media (max-width: 768px) {
+  .menubar-content {
+    grid-template-columns: auto 1fr auto;
+    padding: 10px 16px;
+    gap: 8px;
+  }
+
+  .title {
+    font-size: 1.4rem;
+    text-align: center;
+    justify-self: center;
+  }
+
+  .title::before {
+    font-size: 1.2rem;
+    margin-right: 6px;
+  }
+
+  .content-padder {
+    padding-top: 80px;
+  }
+
+  .wallet-info {
+    margin-right: 0;
+    align-items: center;
+  }
+
+  .wallet-balance {
+    font-size: 0.95rem;
+  }
+
+  .wallet-address {
+    font-size: 0.6rem;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .wallet-btn {
+    padding: 8px 16px;
+    font-size: 0.8rem;
+  }
+
+  .dashboard-top {
+    gap: 35px;
+    margin-bottom: 60px;
+  }
+
+  .hero-title {
+    font-size: 2.2rem;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+    margin: 0 auto 24px auto;
+    padding: 0 16px;
+  }
+
+  .hero-wallets {
+    padding: 24px;
+    width: 90%;
+  }
+
+  .wallet-btn-large {
+    padding: 14px 24px;
+    font-size: 0.95rem;
+    width: 100%;
+  }
+
+  .global-stats {
+    width: 90%;
+  }
+
+  .stats-card {
+    padding: 28px 20px;
+  }
+
+  .global-stats h2 span {
+    font-size: 2.8rem;
+    letter-spacing: -2px;
+  }
+
+  .goal-text {
+    font-size: 0.75rem;
+  }
+
+  .campaigns-grid {
+    gap: 16px;
+    padding: 16px 0 40px;
+  }
+
+  .campaign-card {
+    flex: 0 0 300px;
+  }
+
+  .campaign-image-wrapper {
+    height: 180px;
+  }
+
+  .campaign-content {
+    padding: 20px;
+  }
+
+  .campaign-title {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+  }
+
+  .campaign-desc {
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+  }
+
+  .campaign-footer {
+    padding-top: 20px;
+  }
+
+  .campaign-stats {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .donate-section {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .amount-input {
+    font-size: 1rem;
+    padding: 14px 50px 14px 16px;
+  }
+
+  .donate-btn {
+    padding: 14px 24px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .recent-activity {
+    margin-top: 80px;
+  }
+
+  .tx-item {
+    flex: 0 0 260px;
+    padding: 20px;
+    border-radius: 14px;
+  }
+
+  .status-toast {
+    left: 16px;
+    right: 16px;
+    bottom: 20px;
+    padding: 18px 24px;
+    border-radius: 14px;
+    font-size: 0.9rem;
+  }
+
+  .steps-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 0 16px;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 0 16px;
+  }
+
+  .section-heading {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    padding: 0 16px;
+  }
+
+  .step-card,
+  .feature-card {
+    padding: 30px 20px;
+  }
+
+  .step-card h3,
+  .feature-card h3 {
+    font-size: 1.2rem;
+  }
+
+  .step-card p,
+  .feature-card p {
+    font-size: 0.9rem;
+  }
+
+  .footer {
+    grid-template-columns: 1fr;
+    padding: 40px 24px;
+    gap: 30px;
+    border-radius: 24px 24px 0 0;
+    margin-top: 80px;
+  }
+
+  .footer-brand h2 {
+    font-size: 1.6rem;
+  }
+
+  .footer-brand p {
+    font-size: 0.95rem;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    gap: 30px;
+    justify-content: flex-start;
+  }
+
+  .cert-modal {
+    width: 95%;
+    max-width: 95%;
+  }
+
+  .cert-border {
+    padding: 30px 20px;
+  }
+
+  .wallet-modal {
+    max-width: 90% !important;
+    padding: 28px !important;
+  }
+
+  .modal-title {
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+  }
+
+  .side-menu {
+    width: 280px;
+    right: -280px;
+    padding: 50px 24px;
+  }
+
+  .side-nav-link {
+    font-size: 1.2rem;
+  }
+
+  .search-input {
+    font-size: 1rem;
+    padding: 14px 20px;
+  }
+
+  .orb-1 {
+    width: 200px;
+    height: 200px;
+  }
+
+  .orb-2 {
+    width: 250px;
+    height: 250px;
+  }
+
+  .orb-3 {
+    width: 180px;
+    height: 180px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+}
+
+/* ========================================
+   RESPONSIVE DESIGN - SMALL PHONE (max-width: 480px)
+   ======================================== */
+@media (max-width: 480px) {
+  .menubar-content {
+    padding: 8px 12px;
+  }
+
+  .title {
+    font-size: 1.15rem;
+    letter-spacing: 1px;
+  }
+
+  .title::before {
+    font-size: 1rem;
+    margin-right: 4px;
+  }
+
+  .content-padder {
+    padding-top: 70px;
+  }
+
+  .hero-title {
+    font-size: 1.75rem;
+    letter-spacing: -0.5px;
+    margin-bottom: 12px;
+  }
+
+  .hero-subtitle {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .hero-wallets {
+    padding: 20px;
+    width: 95%;
+  }
+
+  .global-stats h2 span {
+    font-size: 2.2rem;
+  }
+
+  .stats-card {
+    padding: 20px 16px;
+  }
+
+  .campaign-card {
+    flex: 0 0 85vw;
+  }
+
+  .campaign-image-wrapper {
+    height: 150px;
+  }
+
+  .campaign-content {
+    padding: 16px;
+  }
+
+  .campaign-title {
+    font-size: 1.15rem;
+  }
+
+  .steps-grid {
+    grid-template-columns: 1fr;
+    padding: 0 12px;
+  }
+
+  .footer {
+    padding: 30px 16px;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .footer-brand h2 {
+    font-size: 1.3rem;
+  }
+
+  .cert-border {
+    padding: 24px 16px;
+  }
+
+  .side-menu {
+    width: 100%;
+    right: -100%;
+  }
+
+  .close-menu-btn {
+    top: 16px;
+    right: 16px;
+  }
+
+  .tx-item {
+    flex: 0 0 220px;
+    padding: 16px;
+    gap: 10px;
+  }
+
+  .wallet-option-btn {
+    padding: 14px;
+  }
+
+  .btn-title {
+    font-size: 1rem;
+  }
+
+  .modal-cancel-btn {
+    margin-top: 20px;
+  }
+
+  .how-it-works,
+  .features-section {
+    padding: 40px 0;
+  }
+
+  .recent-activity {
+    margin-top: 50px;
+  }
+}
