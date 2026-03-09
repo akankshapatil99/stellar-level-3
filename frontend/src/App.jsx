@@ -242,6 +242,7 @@ export default function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showPlatformDetails, setShowPlatformDetails] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -312,7 +313,9 @@ export default function App() {
           .build();
         const nxsSim = await server.simulateTransaction(nxsTx);
         if (nxsSim.result?.retval) {
-          setNxsBalance(Number(scValToNative(nxsSim.result.retval)));
+          // Convert stroops to whole units (assuming 7 decimals)
+          const stroops = BigInt(scValToNative(nxsSim.result.retval));
+          setNxsBalance(Number(stroops) / 1e7);
         } else {
           setNxsBalance(0);
         }
@@ -395,7 +398,7 @@ export default function App() {
         new Address(address).toScVal(),
         new Address("CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC").toScVal(),
         nativeToScVal(id, { type: "u32" }),
-        nativeToScVal(Number(amt), { type: "i128" })
+        nativeToScVal(BigInt(Math.floor(Number(amt) * 1e7)), { type: "i128" })
       );
 
       // 3. Build transaction
@@ -480,7 +483,8 @@ export default function App() {
         .build();
       const platSim = await server.simulateTransaction(platTx);
       if (platSim.result?.retval) {
-        let newPlatformTotal = Number(scValToNative(platSim.result.retval));
+        let newPlatformTotalStroops = BigInt(scValToNative(platSim.result.retval));
+        let newPlatformTotal = Number(newPlatformTotalStroops) / 1e7;
         newPlatformTotal += BASE_PLATFORM_TOTAL;
 
         setPlatformTotal(newPlatformTotal);
@@ -496,7 +500,8 @@ export default function App() {
           .build();
         const sim = await server.simulateTransaction(tx);
         if (sim.result?.retval) {
-          newTotals[camp.id] = Number(scValToNative(sim.result.retval)) + (BASE_CAMPAIGN_TOTALS[camp.id] || 0);
+          const campStroops = BigInt(scValToNative(sim.result.retval));
+          newTotals[camp.id] = (Number(campStroops) / 1e7) + (BASE_CAMPAIGN_TOTALS[camp.id] || 0);
         }
       }
       setCampaignTotals(newTotals);
