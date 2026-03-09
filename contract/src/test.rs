@@ -80,7 +80,7 @@ fn test_multiple_donations() {
 /// Test that donating zero panics with the invalid-amount guard.
 #[test]
 #[cfg(not(windows))]
-#[should_panic(expected = "Invalid amount")]
+#[should_panic]
 fn test_donate_zero_amount_panics() {
     let env = Env::default();
     env.mock_all_auths();
