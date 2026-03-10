@@ -49,10 +49,10 @@ Soroban's strength lies in its ability to handle complex inter-contract interact
 
 # Advanced Features & Recent Updates
 
-- ** NXS Reward Token Mechanics**: Integrated a custom token engine. Donors automatically receive **10 NXS tokens per 1 XLM** contributed, minted directly by the smart contract.
-- ** Global Impact Visualization**: A platform-wide progress bar tracking collective goals across all verified initiatives.
-- ** 100% Mobile Responsive**: Fully adaptive layout with a custom slide-out side menu.
-- ** Performance & UX**: 
+- NXS Reward Token Mechanics: Integrated a custom token engine. Donors automatically receive **10 NXS tokens per 1 XLM** contributed, minted directly by the smart contract.
+- Global Impact Visualization: A platform-wide progress bar tracking collective goals across all verified initiatives.
+- 100% Mobile Responsive: Fully adaptive layout with a custom slide-out side menu.
+- Performance & UX: 
   - **Animated Loading Screen**: Smooth initial startup state.
   - **Automatic Polling**: Account balances refresh every 30 seconds.
   - **Copy-to-Clipboard**: Quick wallet address sharing from the header.
