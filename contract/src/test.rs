@@ -102,3 +102,49 @@ fn test_nxs_internal_balance_tracker() {
     // Internal NXS tracker: (250 + 150) * 10 = 4000
     assert_eq!(client.get_nxs_balance(&user), 4000);
 }
+
+#[test]
+fn test_donate_multiple_campaigns() {
+    let env = Env::default();
+    env.mock_all_auths();
+
+    let contract_id = env.register_contract(None, Crowdfunding);
+    let client = CrowdfundingClient::new(&env, &contract_id);
+    client.initialize();
+
+    let user = Address::generate(&env);
+    let admin = Address::generate(&env);
+    let (token_address, token_admin) = create_token_contract(&env, &admin);
+
+    token_admin.mint(&user, &5000);
+
+    // Donate to campaign 1
+    client.donate(&user, &token_address, &1, &100);
+    // Donate to campaign 2
+    client.donate(&user, &token_address, &2, &200);
+
+    assert_eq!(client.get_total(&1), 100);
+    assert_eq!(client.get_total(&2), 200);
+    assert_eq!(client.get_platform_total(), 300);
+}
+
+#[test]
+fn test_large_donation() {
+    let env = Env::default();
+    env.mock_all_auths();
+
+    let contract_id = env.register_contract(None, Crowdfunding);
+    let client = CrowdfundingClient::new(&env, &contract_id);
+    client.initialize();
+
+    let user = Address::generate(&env);
+    let admin = Address::generate(&env);
+    let (token_address, token_admin) = create_token_contract(&env, &admin);
+
+    token_admin.mint(&user, &1_000_000_000);
+
+    client.donate(&user, &token_address, &5, &1_000_000_000);
+
+    assert_eq!(client.get_total(&5), 1_000_000_000);
+    assert_eq!(client.get_platform_total(), 1_000_000_000);
+}

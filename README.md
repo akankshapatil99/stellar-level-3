@@ -36,7 +36,7 @@ Nexus is a premium, decentralized crowdfunding platform powered by the **Stellar
 # Technical Excellence
 
 ## Smart Contract Testing
-<img src="./l2ss/cargo tests.png" alt="Test Results" width="800">
+<img src="./l2ss/image.png" alt="Test Results" width="800">
 *Verifying 5+ critical test cases including zero-donation guards and NXS balance tracking.*
 
 ## 🔗 Inter-Contract Calls
