@@ -81,9 +81,9 @@ The project has been enhanced through strategic, atomic commits:
 
 # Deployed Contracts (Testnet)
 
-- **Nexus Platform Contract**: `CBZ7ZPWXXWSHXWDLH2ZFC5XS66HAWWJZRJP3YC5BZ773KWLZPPRDKM3M`
-- **NXS Reward Token**: `CDYGYOYQA7C35QDS4YSPZEHSVAOD4AEKXO2IABOGUVX7XJSQ4Y34MHDC`
-- **Inter-Contract Call Token (XLM)**: `CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC`
+- **Nexus Platform Contract**: [`CBZ7ZPWXXWSHXWDLH2ZFC5XS66HAWWJZRJP3YC5BZ773KWLZPPRDKM3M`](https://stellar.expert/explorer/testnet/contract/CBZ7ZPWXXWSHXWDLH2ZFC5XS66HAWWJZRJP3YC5BZ773KWLZPPRDKM3M)
+- **NXS Reward Token**: [`CDYGYOYQA7C35QDS4YSPZEHSVAOD4AEKXO2IABOGUVX7XJSQ4Y34MHDC`](https://stellar.expert/explorer/testnet/contract/CDYGYOYQA7C35QDS4YSPZEHSVAOD4AEKXO2IABOGUVX7XJSQ4Y34MHDC)
+- **Inter-Contract Call Token (XLM)**: [`CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC`](https://stellar.expert/explorer/testnet/contract/CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC)
 
 
 # Development Setup
@@ -105,11 +105,11 @@ Here is a summary of all the requirements for the Level 4 Deliverable:
 - **Mobile Responsive View:** See the [Mobile Responsive Design](#mobile-responsive-design) section or watch the [Mobile Demo Video](./l2ss/phone%20recording.mp4).
 - **CI/CD Pipeline Running:** [GitHub Actions Workflow](https://github.com/akankshapatil99/stellar-level-3-4/actions/workflows/ci.yml)
 - **Contract Addresses & Transaction Hash (Inter-Contract Calls):**
-  - Nexus Platform Contract: `CBZ7ZPWXXWSHXWDLH2ZFC5XS66HAWWJZRJP3YC5BZ773KWLZPPRDKM3M`
-  - Inter-Contract Call Token (XLM): `CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC`
+  - Nexus Platform Contract: [`CBZ7ZPWXXWSHXWDLH2ZFC5XS66HAWWJZRJP3YC5BZ773KWLZPPRDKM3M`](https://stellar.expert/explorer/testnet/contract/CBZ7ZPWXXWSHXWDLH2ZFC5XS66HAWWJZRJP3YC5BZ773KWLZPPRDKM3M)
+  - Inter-Contract Call Token (XLM): [`CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC`](https://stellar.expert/explorer/testnet/contract/CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC)
   - **Sample Transaction Hash (Donation Call):** `[INSERT_TX_HASH_HERE]` (Placeholder - add your transaction hash here!)
 - **Token Address (Custom NXS Reward Token):**
-  - NXS Reward Token: `CDYGYOYQA7C35QDS4YSPZEHSVAOD4AEKXO2IABOGUVX7XJSQ4Y34MHDC`
+  - NXS Reward Token: [`CDYGYOYQA7C35QDS4YSPZEHSVAOD4AEKXO2IABOGUVX7XJSQ4Y34MHDC`](https://stellar.expert/explorer/testnet/contract/CDYGYOYQA7C35QDS4YSPZEHSVAOD4AEKXO2IABOGUVX7XJSQ4Y34MHDC)
 - **8+ Meaningful Commits:** See the [8 Meaningful Commits](#8-meaningful-commits) section.
 
 
