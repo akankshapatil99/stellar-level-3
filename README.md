@@ -61,7 +61,7 @@ Soroban's strength lies in its ability to handle complex inter-contract interact
 # Project Walkthroughs
 | Desktop Walkthrough | Mobile Walkthrough |
 | :---: | :---: |
-| [![Watch the Demo](https://img.shields.io/badge/Watch-Desktop%20Demo%20Video-red?style=for-the-badge&logo=youtube)](./l2ss/stellar%20screenrecording.mp4) | [![Watch the Demo](https://img.shields.io/badge/Watch-Mobile%20Demo%20Video-red?style=for-the-badge&logo=youtube)](./l2ss/phone%20recording.mp4) |
+| [![Watch the Demo](https://img.shields.io/badge/Watch-Desktop%20Demo%20Video-red?style=for-the-badge&logo=youtube)](https://youtu.be/yRbqNPWBD_g?si=s5iuFS-lk9HuAnId) | [![Watch the Demo](https://img.shields.io/badge/Watch-Mobile%20Demo%20Video-red?style=for-the-badge&logo=youtube)](https://youtube.com/shorts/I32mRWJEdcM?feature=shared) |
 
 ---
 
@@ -102,7 +102,7 @@ cd ../contract && cargo build --target wasm32-unknown-unknown --release
 Here is a summary of all the requirements for the Level 4 Deliverable:
 
 - **Live Demo:** [Vercel Deployment](https://frontend-282amsr20-akankshapatil99s-projects.vercel.app/)
-- **Mobile Responsive View:** See the [Mobile Responsive Design](#mobile-responsive-design) section or watch the [Mobile Demo Video](./l2ss/phone%20recording.mp4).
+- **Mobile Responsive View:** See the [Mobile Responsive Design](#mobile-responsive-design) section or watch the [Mobile Demo Video](https://youtube.com/shorts/I32mRWJEdcM?feature=shared).
 - **CI/CD Pipeline Running:** [GitHub Actions Workflow](https://github.com/akankshapatil99/stellar-level-3-4/actions/workflows/ci.yml)
 - **Contract Addresses & Transaction Hash (Inter-Contract Calls):**
   - Nexus Platform Contract: [`CBZ7ZPWXXWSHXWDLH2ZFC5XS66HAWWJZRJP3YC5BZ773KWLZPPRDKM3M`](https://stellar.expert/explorer/testnet/contract/CBZ7ZPWXXWSHXWDLH2ZFC5XS66HAWWJZRJP3YC5BZ773KWLZPPRDKM3M)
